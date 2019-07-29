@@ -53,7 +53,7 @@ class RouterList extends React.Component {
 }
 
 if (window.system) {
-    window.system.push(RouterList)
+    window.system.push(...RouterList)
 } else {
     window.system = [RouterList]
 }
