@@ -10,8 +10,12 @@ import { getTestData } from '@http/testHttp'
 import Header from './header'
 import { inject, observer } from 'mobx-react'
 
-import Routers from '@views/systemModule/router'
+console.log('在这里打印全局变量：', global)
 
+let Routers = []
+if (global.system) {
+    Routers = global.system
+}
 
 // @inject 与@observer的顺序不能错 否则会导致试图无法重新渲染
 
@@ -31,6 +35,12 @@ class Home extends React.Component {
         testStore.add();
     }
 
+    createRouter = (Routers) => {
+        return Routers.map((Item, index) => {
+            return <Item {...this.props} key={index} />
+        })
+    }
+
     render() {
         const { testStore } = this.props
         return (
@@ -38,7 +48,9 @@ class Home extends React.Component {
                 {/* <Header /> */}
                 num:{testStore.num}
                 <Button onClick={this.change}>改变store里的值</Button>
-                <Routers />
+                {
+                    Routers && Routers.length != 0 ? this.createRouter(Routers) : null
+                }
                 <DevTools />
             </div>
         )
